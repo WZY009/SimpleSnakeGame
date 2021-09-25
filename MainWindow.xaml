@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="Moon Snake Game" Height="540" Width="660" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
-        <DockPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="157*"/>
+            <RowDefinition Height="18*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.RowSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="Document">
                     <MenuItem Name="MenuFile_NewGame" Header="New Game"/>

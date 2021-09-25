@@ -17,7 +17,7 @@ namespace SimpleSnakeGame
 {
     public class SnakeNode
     {
-        public Point _pos { get; set; }
+        public Point _pos { get; set; }//describe the left top left corner of fruit
         public Rectangle _rect { get; set; }
         public SnakeNode(Point point)
         {

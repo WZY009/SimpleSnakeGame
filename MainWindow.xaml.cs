@@ -21,13 +21,21 @@ namespace SimpleSnakeGame
     /// 
     public partial class MainWindow : Window
     {
+
+        System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();   
+
         public MainWindow()
         {
             InitializeComponent ();
             myCanvas.Children.Add(DrawGrid.MyDrawGrid());
+            GameState gameState = new GameState();
+            Fruit fruit = new Fruit(gameState.SetFruitPosition(), myCanvas);
+                      
         }
-
+        
+        
     }
+
     
 
 }

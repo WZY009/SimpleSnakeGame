@@ -11,7 +11,7 @@ namespace SimpleSnakeGame
         const int CellSize = 20;                // size of the cell
         const int SnakeHead = 0;                // the position of the snake's head(always on the starting of the list)
         const int CellWidth = 640 / CellSize;    // the number of the cell in the wide side
-        const int CellHeight = 480 / CellSize;    // 
+        const int CellHeight = 480 / CellSize;    
 
         static public Path MyDrawGrid()
         {

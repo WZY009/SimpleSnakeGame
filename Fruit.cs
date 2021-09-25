@@ -10,6 +10,7 @@ namespace SimpleSnakeGame
 {
     public class Fruit
     {
+        // if you forget get() set() method, please check this page:https://blog.csdn.net/alzzw/article/details/112859568
         public Point _pos { get; set; }
         public Ellipse _ellipse { get; set; }
         public Canvas _canvas { get; set; }
