@@ -12,34 +12,34 @@ namespace SimpleSnakeGame
         const int CELLWIDTH = 640 / CELLSIZE; // how many cells on the direction of width   
         const int CELLHEIGHT = 480 / CELLSIZE; // how many cells on the direction of height
         // the moving direction of the snake
-        enum Direction
+        public enum Direction
         {
             UP,
             DOWN,
             LEFT,
             RIGHT
         }
-        Direction direction = Direction.UP;
+        public Direction direction = Direction.UP;
         // the state of the game
-        enum State
+        public enum State
         {
             NONE,
             GAMEING,
             PAUSE,
             STOP
         }
-        State state = State.NONE;
+        public State state = State.NONE;
 
-        List<SnakeNode> snakelist1 = new List<SnakeNode>();        // the list of the snake's body
-        Fruit myFruit;                                            // initialize the position of the snake
+        List<SnakeNode> snakelist1;        // the list of the snake's body
+        public Fruit myFruit;                                            // initialize the position of the snake
         System.Windows.Controls.Canvas myCanvas;
         Random rnd = new Random();        // produce random number
-        GameState(Fruit fruit,System.Windows.Controls.Canvas canvas)
+
+        public GameState(System.Windows.Controls.Canvas canvas)
         {
-            myFruit = fruit;
+            
             myCanvas = canvas;
         }
-
         public Point SetFruitPosition()//Pay attention! the position of the fruit can not overlap with any section of the snake
         {
             bool flag = true;
@@ -48,6 +48,9 @@ namespace SimpleSnakeGame
             {
                 flag = false;
                 pos = new Point(rnd.Next(0, CELLWIDTH), rnd.Next(0, CELLHEIGHT));
+                if (snakelist1 == null)
+                    return pos;
+                
                 foreach (var node in snakelist1)
                 {
                     if (pos.X == node._pos.X && pos.Y == node._pos.Y)
@@ -58,8 +61,7 @@ namespace SimpleSnakeGame
                 }
             }
             return pos;
-        }
-        
+        }    
         public void GenNewSnakeNode()
         {
             //generate the whole snake
@@ -81,8 +83,12 @@ namespace SimpleSnakeGame
                     snakeNode = new SnakeNode(new Point(snakelist1[SNAKEHEAD]._pos.X + 1, snakelist1[SNAKEHEAD]._pos.Y));
                     break;
             }
+            if (snakeNode != null)
+            {
+                snakelist1.Insert(0, snakeNode);
+                myCanvas.Children.Add(snakelist1[0]._rect);
+            }
         }
-
         public void IsEat()
         {
             //Only the snake's head will "eat" the fruit, you only need judge whether the head's position is same as the fruit's.
@@ -91,13 +97,66 @@ namespace SimpleSnakeGame
                 myFruit.SetPostion(SetFruitPosition());
             else
             {
-                if(myCanvas.Children.Contains(snakelist1[snakelist1.Count-1]._rect))
-                    myCanvas.Children.Remove(snakelist1[snakelist1.Count - 1]._rect));//Removes the first occurrence of a specific object from the List<T>
+                if (myCanvas.Children.Contains(snakelist1[snakelist1.Count - 1]._rect)) 
+                    myCanvas.Children.Remove(snakelist1[snakelist1.Count - 1]._rect);//Removes the first occurrence of a specific object from the List<T>
                 snakelist1.RemoveAt(snakelist1.Count - 1);// Removes the element at the specified index of the List<T>.
             }
 
 
 
+        }
+        public void RemoveAllSnake()
+        {
+            if (snakelist1 == null)//It means if there is no snake we don't have to delete,if we do not have this code, when we want to restart the last osnake will be left.            
+                return;
+            
+            for(int i = 0; i < snakelist1.Count; i++)
+            {
+                if (myCanvas.Children.Contains(snakelist1[i]._rect))
+                    myCanvas.Children.Remove(snakelist1[i]._rect);
+            }
+        }
+        public void RemoveFruit()
+        {
+            if (myFruit == null)
+                return;
+            if (myCanvas.Children.Contains(myFruit._ellipse))
+                myCanvas.Children.Remove(myFruit._ellipse);
+        }
+        public void StartGame()
+        {
+            //snakelist1 = new List<SnakeNode>();
+            RemoveAllSnake();
+            RemoveFruit();
+            snakelist1 = new List<SnakeNode>();
+            int startX = rnd.Next(5, CELLWIDTH - 6);
+            int startY = rnd.Next(5, CELLWIDTH - 6);
+            direction = Direction.RIGHT;           
+            myFruit = new Fruit(this.SetFruitPosition(), myCanvas);               
+            snakelist1.Add(new SnakeNode(new Point(startX, startY)));
+            GenNewSnakeNode();
+            
+
+
+        }
+        public bool IsGameOver()
+        {
+            if (snakelist1[SNAKEHEAD]._pos.X == -1 || snakelist1[SNAKEHEAD]._pos.X == CELLWIDTH
+                || snakelist1[SNAKEHEAD]._pos.Y == -1 || snakelist1[SNAKEHEAD]._pos.Y == CELLHEIGHT)// the snake collide with the window's edge.
+            {
+                return true;
+            }
+
+            foreach (var node in snakelist1)
+            {
+                if (node == snakelist1[SNAKEHEAD])
+                    continue;//pass the snake head
+                if (node._pos.X == snakelist1[SNAKEHEAD]._pos.X && node._pos.Y == snakelist1[SNAKEHEAD]._pos.Y)//make sure the snake's head will not conflict with its body
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

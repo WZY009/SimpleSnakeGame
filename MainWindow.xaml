@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleSnakeGame"
         mc:Ignorable="d"
-        Title="Moon Snake Game" Height="540" Width="660" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="Moon Snake Game" Height="540" Width="660" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" PreviewKeyDown="myCanvas_PreviewKeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="157*"/>
@@ -14,18 +14,18 @@
         <DockPanel Grid.RowSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="Document">
-                    <MenuItem Name="MenuFile_NewGame" Header="New Game"/>
+                    <MenuItem Name="MenuFile_NewGame" Header="New Game" Click="MenuFile_NewGame_Click"/>
                     <Separator/>
-                    <MenuItem Name="MenuFile_Exit" Header="Exit"/>
+                    <MenuItem Name="MenuFile_Exit" Header="Exit" Click="MenuFile_Exit_Click"/>
                 </MenuItem>
                 <MenuItem Header="Control">
-                    <MenuItem Name="MenuControl_Pause" Header="Pause"/>
+                    <MenuItem Name="MenuControl_Pause" Header="Pause" Click="MenuControl_Pause_Click"/>
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Name="MenuHelp_About" Header="About"/>
                 </MenuItem>
             </Menu>
-            <Canvas x:Name="myCanvas" Height="480" Width="640" Background="#222222" Focusable="True" />
+            <Canvas x:Name="myCanvas" Height="480" Width="640" Background="#222222" Focusable="True" PreviewKeyDown="myCanvas_PreviewKeyDown" />
 
         </DockPanel>
     </Grid>
