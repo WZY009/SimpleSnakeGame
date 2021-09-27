@@ -52,7 +52,7 @@ namespace SimpleSnakeGame
 
         private void MenuFile_NewGame_Click(object sender, RoutedEventArgs e)
         {
-            gameState.StartGame(l);
+            gameState.StartGame();
             timer.Start();
             gameState.state = GameState.State.GAMEING;
             MenuControl_Pause.Header = "Pause";
@@ -137,21 +137,21 @@ namespace SimpleSnakeGame
 
         private void MenuHelp_HardLevels_Click(object sender, RoutedEventArgs e)//I think this place can be improved(use delegate?)
         {
-            levels = Levels.HARD;
+            gameState.levels = GameState.Levels.HARD;
             MenuHelp_MiddleLevels.IsChecked = false;
             MenuHelp_SimpleLevels.IsChecked = false;
         }
 
         private void MenuHelp_MiddleLevels_Click(object sender, RoutedEventArgs e)
         {
-            levels = Levels.MIDDLE;
+            gameState.levels = GameState.Levels.MIDDLE;
             MenuHelp_HardLevels.IsChecked = false;
             MenuHelp_SimpleLevels.IsChecked = false;
         }
 
         private void MenuHelp_SimpleLevels_Click(object sender, RoutedEventArgs e)
         {
-            levels = Levels.SIMPLE;
+            gameState.levels = GameState.Levels.SIMPLE;
             MenuHelp_MiddleLevels.IsChecked = false;
             MenuHelp_HardLevels.IsChecked = false;
         }

@@ -45,10 +45,9 @@ namespace SimpleSnakeGame
 
         public GameState(System.Windows.Controls.Canvas canvas)
         {
-
             _canvas = canvas;
         }
-        public Point SetFruitPosition()//Pay attention! the position of the fruit can not overlap with any section of the snake
+        public Point SetFruitPosition()//Pay attention! the position of the fruit can not overlap with any section of the snake and blocks
         {
             bool flag = true;
             Point pos = new Point();
@@ -56,17 +55,46 @@ namespace SimpleSnakeGame
             {
                 flag = false;
                 pos = new Point(rnd.Next(0, CELLWIDTH), rnd.Next(0, CELLHEIGHT));
-                if (snakelist1 == null)
-                    return pos;
-
-                foreach (var node in snakelist1)
+                if (snakelist1 != null && blocklist!=null)
                 {
-                    if (pos.X == node._pos.X && pos.Y == node._pos.Y)
+                    foreach (var node in snakelist1)
                     {
-                        flag = true;
-                        break;
+                        if (pos.X == node._pos.X && pos.Y == node._pos.Y)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    foreach (var block in blocklist)
+                    {
+                        if (pos.X == block._pos.X && pos.Y == block._pos.Y)
+                        {
+                            flag = true;
+                            break;
+                        }
                     }
                 }
+                else if (snakelist1 == null)
+                {
+                    foreach (var block in blocklist)
+                    {
+                        if (pos.X == block._pos.X && pos.Y == block._pos.Y)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }    
+                else if (blocklist == null){
+                    foreach (var node in snakelist1)
+                    {
+                        if (pos.X == node._pos.X && pos.Y == node._pos.Y)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }      
             }
             return pos;
         }
@@ -103,9 +131,9 @@ namespace SimpleSnakeGame
             // When the snake eats the fruit, the fruit will be on the other position, if not, we can delete the end of the snake so form the perspective of users, they feel the snake move.
             if (snakelist1[SNAKEHEAD]._pos.X == myFruit._pos.X && snakelist1[SNAKEHEAD]._pos.Y == myFruit._pos.Y)//the snake eats the fruit.         
             {
-                myFruit.SetPostion(SetFruitPosition());
-                if(MainWindow.Levels.HARD)
-                produceBlock(50);
+                if (levels == Levels.HARD)
+                    produceBlock(100);
+                myFruit.SetPostion(SetFruitPosition());                
             }
             else
             {
@@ -144,10 +172,10 @@ namespace SimpleSnakeGame
                 if (_canvas.Children.Contains(blocklist[i]._rect))
                     _canvas.Children.Remove(blocklist[i]._rect);
             }
+            blocklist.Clear();
         }
-        public void StartGame(MainWindow.Levels level)
-        {
-            
+        public void StartGame()
+        {           
             RemoveAllSnake();
             RemoveAllBlocks();
             RemoveFruit();
@@ -156,22 +184,20 @@ namespace SimpleSnakeGame
             int startX = rnd.Next(5, CELLWIDTH - 6);
             int startY = rnd.Next(5, CELLWIDTH - 6);
             direction = Direction.RIGHT;
-            myFruit = new Fruit(this.SetFruitPosition(), _canvas);
             snakelist1.Add(new SnakeNode(new Point(startX, startY)));
             GenNewSnakeNode();
-            switch (level)
+            switch (levels)
             {
-                case MainWindow.Levels.SIMPLE:
+                case Levels.SIMPLE:
                     break;
-                case MainWindow.Levels.MIDDLE:
+                case Levels.MIDDLE:
                     produceBlock(50);
                     break;
-                case MainWindow.Levels.HARD:
+                case Levels.HARD:
                     produceBlock(100);
                     break;
             }
-
-
+            myFruit = new Fruit(this.SetFruitPosition(), _canvas);
         }
         public bool IsGameOver()
         {
@@ -201,11 +227,26 @@ namespace SimpleSnakeGame
         }
         private void produceBlock(int num)
         {
+            RemoveAllBlocks();
             blocklist = new List<Blockings>();
             for (int i = 0; i < num; i++)
             {
-                int blockX = rnd.Next(0, CELLWIDTH);
-                int blockY = rnd.Next(0, CELLHEIGHT);
+                bool flag = true;
+                int blockX = 0, blockY = 0;
+                while (flag)//to make sure the blocks will never be overlapped with the snake.
+                {
+                    flag = false;
+                    blockX = rnd.Next(0, CELLWIDTH);
+                    blockY = rnd.Next(0, CELLHEIGHT);
+                    foreach (var node in snakelist1)
+                    {
+                        if (blockX==node._pos.X&&blockY==node._pos.Y)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
                 blocklist.Add(new Blockings(new Point(blockX, blockY), _canvas));
             }
         }
