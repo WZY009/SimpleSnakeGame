@@ -22,7 +22,7 @@ namespace SimpleSnakeGame
             {
                 Width = 20,
                 Height = 20,
-                Fill = Brushes.Red
+                Fill = Brushes.Yellow
             };
             _ellipse.SetValue(Canvas.LeftProperty, _pos.X * 20);
             _ellipse.SetValue(Canvas.TopProperty, _pos.Y * 20);

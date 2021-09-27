@@ -24,6 +24,13 @@
                 <MenuItem Header="Help">
                     <MenuItem Name="MenuHelp_About" Header="About"/>
                 </MenuItem>
+                <MenuItem Header="Levels">
+                    <MenuItem Name="MenuHelp_HardLevels" Header="Hard" IsCheckable="True" Click="MenuHelp_HardLevels_Click"/>
+                    <Separator/>
+                    <MenuItem Name="MenuHelp_MiddleLevels" Header="Middle" IsCheckable="True" Click="MenuHelp_MiddleLevels_Click" />
+                    <Separator/>
+                    <MenuItem Name="MenuHelp_SimpleLevels" Header="Simple" IsChecked="True" IsCheckable="True" Click="MenuHelp_SimpleLevels_Click"/>
+                </MenuItem>
             </Menu>
             <Canvas x:Name="myCanvas" Height="480" Width="640" Background="#222222" Focusable="True" PreviewKeyDown="myCanvas_PreviewKeyDown" />
 

@@ -33,11 +33,11 @@ namespace SimpleSnakeGame
             gameState = new GameState(myCanvas);
             timer = new System.Windows.Threading.DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 260);
-            timer.Tick += Timer_Tick;
-           
+            timer.Tick += Timer_Tick;          
         }
 
         private void Timer_Tick(object sender, EventArgs e)
+
         {
             gameState.IsEat();
             gameState.GenNewSnakeNode();
@@ -52,7 +52,7 @@ namespace SimpleSnakeGame
 
         private void MenuFile_NewGame_Click(object sender, RoutedEventArgs e)
         {
-            gameState.StartGame();
+            gameState.StartGame(l);
             timer.Start();
             gameState.state = GameState.State.GAMEING;
             MenuControl_Pause.Header = "Pause";
@@ -134,8 +134,26 @@ namespace SimpleSnakeGame
                 MenuControl_Pause.Header = "Pause";
             }
         }
+
+        private void MenuHelp_HardLevels_Click(object sender, RoutedEventArgs e)//I think this place can be improved(use delegate?)
+        {
+            levels = Levels.HARD;
+            MenuHelp_MiddleLevels.IsChecked = false;
+            MenuHelp_SimpleLevels.IsChecked = false;
+        }
+
+        private void MenuHelp_MiddleLevels_Click(object sender, RoutedEventArgs e)
+        {
+            levels = Levels.MIDDLE;
+            MenuHelp_HardLevels.IsChecked = false;
+            MenuHelp_SimpleLevels.IsChecked = false;
+        }
+
+        private void MenuHelp_SimpleLevels_Click(object sender, RoutedEventArgs e)
+        {
+            levels = Levels.SIMPLE;
+            MenuHelp_MiddleLevels.IsChecked = false;
+            MenuHelp_HardLevels.IsChecked = false;
+        }
     }
-
-    
-
 }
